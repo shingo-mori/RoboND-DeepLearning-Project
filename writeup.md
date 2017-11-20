@@ -2,8 +2,8 @@
 
 #### Steps to complete the project:
 
-- Clone the project repo here
-- Fill out the TODO's in the project code as mentioned here
+- Clone the project repo [here](https://github.com/udacity/RoboND-DeepLearning-Project.git)
+- Fill out the TODO's in the project code in the `code/model_training.ipynb` file.
 - Optimize your network and hyper-parameters.
 - Train your network and achieve an accuracy of 40% (0.4) using the Intersection over Union IoU metric.
 - Make a brief writeup report summarizing why you made the choices you did in building the network.
