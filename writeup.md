@@ -24,9 +24,9 @@ You're reading it!
 
 #### 2. The write-up conveys the an understanding of the network architecture.
 
-![alt text][image1]
+![model structure][image1]
 
-![alt text][image2]
+![model plot][image2]
 
 #### 3. The write-up conveys the student's understanding of the parameters chosen for the the neural network.
 
