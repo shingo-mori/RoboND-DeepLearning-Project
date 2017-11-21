@@ -14,11 +14,19 @@
 ---
 ### Writeup
 
+[//]: # (Image References)
+[image1]: ./docs/misc/FCN.png
+[image2]: ./docs/misc/model.png
+
 #### 1. Provide a write-up / README document including all rubric items addressed in a clear and concise manner. The document can be submitted either in either Markdown or a PDF format.
 
 You're reading it!
 
 #### 2. The write-up conveys the an understanding of the network architecture.
+
+![alt text][image1]
+
+![alt text][image2]
 
 #### 3. The write-up conveys the student's understanding of the parameters chosen for the the neural network.
 
