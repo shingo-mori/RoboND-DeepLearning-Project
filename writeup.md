@@ -24,6 +24,10 @@ You're reading it!
 
 #### 2. The write-up conveys the an understanding of the network architecture.
 
+In this project, we want to locate where the target is in the scene so that the quadcopter can follow the target. We use Fully Convolutional Network to achieve this goal.
+
+A typical CNN is a great architecture to classify a picture whether it contains the target. However, since typical CNNs do not preserve the spacial information, we are not able to locate where the target is using this architecture. FCN, on the other hand, preserves spacial information throughout the entire network. This enables us to extract the target-pixels from the scene.
+
 ![model structure][image1]
 
 ![model plot][image2]
