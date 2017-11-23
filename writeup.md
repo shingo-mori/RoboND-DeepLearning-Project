@@ -8,13 +8,20 @@
 - Train your network and achieve an accuracy of 40% (0.4) using the Intersection over Union IoU metric.
 - Make a brief writeup report summarizing why you made the choices you did in building the network.
 
-## [Rubric](https://review.udacity.com/#!/rubrics/1155/view) Points
+#### Project Specification
+ Rubric points for this project are explained [here](https://review.udacity.com/#!/rubrics/1155/view).
 
 ---
 ### Writeup
 
+- TODO: write limitations and improvements
+- TODO: write introduction
+
 [//]: # (Image References)
-[image1]: ./docs/misc/model.png
+[image_model]: ./docs/misc/model.png
+[image_following_images]: ./docs/misc/following_images.png
+[image_patrol_non_targ]: ./docs/misc/patrol_non_targ.png
+[image_patrol_with_targ]: ./docs/misc/patrol_with_targ.png
 
 #### Model Architecture
 
@@ -30,26 +37,64 @@ In addition to the up-sampling technic with the encoder/decoder structure, FCNs 
 
 In this project, the network is comprised of the following layers:
 
+- input layer (channels=3 (RGB))
+
 - 3 encoder layer layers (channels=32,64,128)
 
 - 1x1 convolution layer (channels=256)
 
 - 3 decoder layers (channels=128,64,32)
 
-There are also input and output layers with 3 input channels (RGB) and 3 output channels (hero, human, background), respectively.
+- output layer (channels=3 (Hero,Human,Background))
 
 Although adding more layers may improve the segmentation result,  it increases the computational time on both training and prediction. Setting 3 layers for each encode/decode layer seems to be reasonable.
 
 Blow is an plotted image of the model:
 
-![model plot][image1]
+![model plot][image_model]
 
-#### Parameters
+#### Training
+The model is trained using default datasets provided by Udacity.
 
-### Implementation
+Hyper-parameters used for training the model are shown below:
+```py
+learning_rate = 0.005
+batch_size = 32
+num_epochs = 20
+steps_per_epoch = 150
+validation_steps = 50
+workers = 4
+```
 
-### Model
+Setting learning_rate to 0.005 seemed to be reasonable for both final score and the learning speed.
 
-#### 1. The model is submitted in the correct format.
+Number of epochs is set to 20, since the final score does not increased much after 20 epochs.
 
-#### 2. The neural network must achieve a minimum level of accuracy for the network implemented.
+Other hyper-parameters (batch_size, steps_per_epoch, validation_steps, workers) are determined based on the hardware used in this project. (GeForce GTX 1060 3 GB)
+
+The model is trained using Adam optimizer. A multi-class [cross entropy](https://en.wikipedia.org/wiki/Cross_entropy) is used to calculate the training and validation error.
+
+#### Result
+The trained model is evaluated using the following three different types of test-images:
+
+- patrol_with_targ
+  - Images to test how well the network can detect the hero from a distance.
+- patrol_non_targ
+  - Images to test how often the network makes a mistake and identifies the wrong person as the target.
+- following_images
+  - Images to test how well the network can identify the target while following them.
+
+Example images of input image, ground truth, and predicted image  are shown below:
+
+- patrol_with_targ
+![image_patrol_with_targ][image_patrol_with_targ]
+
+- patrol_non_targ
+![image_patrol_non_targ][image_patrol_non_targ]
+
+- following_images
+![image_following_images][image_following_images]
+
+The performance of the model is measured using Intersection over  Union (IoU) metric.
+
+#### Files
