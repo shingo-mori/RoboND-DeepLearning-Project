@@ -9,36 +9,44 @@
 - Make a brief writeup report summarizing why you made the choices you did in building the network.
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/1155/view) Points
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
 ---
 ### Writeup
 
 [//]: # (Image References)
-[image1]: ./docs/misc/FCN.png
-[image2]: ./docs/misc/model.png
+[image1]: ./docs/misc/model.png
 
-#### 1. Provide a write-up / README document including all rubric items addressed in a clear and concise manner. The document can be submitted either in either Markdown or a PDF format.
+#### Model Architecture
 
-You're reading it!
-
-#### 2. The write-up conveys the an understanding of the network architecture.
-
-In this project, we want to locate where the target is in the scene so that the quadcopter can follow the target. We use Fully Convolutional Network to achieve this goal.
+In this project, we want to locate where the target is in the scene so that the quadcopter can follow the target. We use Fully Convolutional Network (FCN) to achieve this goal.
 
 A typical CNN is a great architecture to classify a picture whether it contains the target. However, since typical CNNs do not preserve the spacial information, we are not able to locate where the target is using this architecture. FCN, on the other hand, preserves spacial information throughout the entire network. This enables us to extract the target-pixels from the scene.
 
-![model structure][image1]
+An FCN is usually comprised of two parts; encoder and decoder. The encoder is a series of convolutional layers like VGG and ResNet. Its goal is to extract features from the image. The decoder is also a series of convolutional layers. However its goal is to up-scale the output of the encoder to match its size with the input image. Thus, the overall output results in a pixel-by-pixel segmentation of the original image.
 
-![model plot][image2]
+In addition to the up-sampling technic with the encoder/decoder structure, FCNs apply other two technics to make its segmentation  more precise; 1x1 convolutional layers and skip connection.
 
-#### 3. The write-up conveys the student's understanding of the parameters chosen for the the neural network.
+1x1 convolutional layers enable the network to multiply the sums of convolution in the encoder layer while preserving their spacial information. Skip connection works by connecting the output of one layer of the encoder to another layer of the decoder. This allows the network to use information from multiple resolutions.
 
-#### 4. The student has a clear understanding and is able to identify the use of various techniques and concepts in network layers indicated by the write-up.
+In this project, the network is comprised of the following layers:
 
-#### 5. The student has a clear understanding of image manipulation in the context of the project indicated by the write-up.
+- 3 encoder layer layers (channels=32,64,128)
 
-#### 6. The student displays a solid understanding of the limitations to the neural network with the given data chosen for various follow-me scenarios which are conveyed in the write-up.
+- 1x1 convolution layer (channels=256)
+
+- 3 decoder layers (channels=128,64,32)
+
+There are also input and output layers with 3 input channels (RGB) and 3 output channels (hero, human, background), respectively.
+
+Although adding more layers may improve the segmentation result,  it increases the computational time on both training and prediction. Setting 3 layers for each encode/decode layer seems to be reasonable.
+
+Blow is an plotted image of the model:
+
+![model plot][image1]
+
+#### Parameters
+
+### Implementation
 
 ### Model
 
