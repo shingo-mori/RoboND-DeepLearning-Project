@@ -77,24 +77,46 @@ The model is trained using Adam optimizer. A multi-class [cross entropy](https:/
 #### Result
 The trained model is evaluated using the following three different types of test-images:
 
+- following_images
+  - Images to test how well the network can identify the target while following them.
 - patrol_with_targ
   - Images to test how well the network can detect the hero from a distance.
 - patrol_non_targ
   - Images to test how often the network makes a mistake and identifies the wrong person as the target.
-- following_images
-  - Images to test how well the network can identify the target while following them.
 
-Example images of input image, ground truth, and predicted image  are shown below:
+Example images of input image, ground truth, and predicted image by the trained model are shown below:
+
+- following_images
+
+![image_following_images][image_following_images]
 
 - patrol_with_targ
+
 ![image_patrol_with_targ][image_patrol_with_targ]
 
 - patrol_non_targ
+
 ![image_patrol_non_targ][image_patrol_non_targ]
 
-- following_images
-![image_following_images][image_following_images]
+The performance of the model is measured by true-positive ratio and  Intersection over Union (IoU) metric. The final score of the model reached 0.411516123844, which is above the required score of 0.4.
 
-The performance of the model is measured using Intersection over  Union (IoU) metric.
+#### Limitations and Improvements
 
 #### Files
+##### model
+The trained weights of the model are saved in the HDF5 format. They are located in the following directory:
+
+```
+./data/weights/
+  config_model_weights1
+  model_weights1
+```
+
+##### notebook
+The model is implemented in the below notebook.  There is also a html version  of this notebook:
+
+```
+./code/
+  model_training.ipynb
+  model_training.html
+```
