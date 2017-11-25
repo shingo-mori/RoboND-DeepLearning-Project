@@ -33,7 +33,7 @@ An FCN is usually comprised of two parts; encoder and decoder. The encoder is a 
 
 In addition to the up-sampling technic with the encoder/decoder structure, FCNs apply other two technics to make its segmentation  more precise; 1x1 convolutional layers and skip connection.
 
-1x1 convolutional layers enable the network to multiply the sums of convolution in the encoder layer while preserving their spacial information. Skip connection works by connecting the output of one layer of the encoder to another layer of the decoder. This allows the network to use information from multiple resolutions.
+1x1 convolutional layers enable the network to multiply the sums of convolution in the encoder layer while preserving their spacial information. Skip connection works by connecting the output of one layer in the encoder to another layer in the decoder. This allows the decoder to use information from multiple resolutions.
 
 In this project, the network is comprised of the following layers:
 
@@ -47,15 +47,13 @@ In this project, the network is comprised of the following layers:
 
 - output layer (channels=3 (Hero,Human,Background))
 
-Although adding more layers may improve the segmentation result,  it increases the computational time on both training and prediction. Setting 3 layers for each encode/decode layer seems to be reasonable.
+Although adding more layers may improve the segmentation result,  it increases the computational time for both training and prediction. Setting 3 layers for each encode/decode layer seems to be a reasonable choice.
 
 Blow is an plotted image of the model:
 
 ![model plot][image_model]
 
 ### Training
-The model is trained using default datasets provided by Udacity.
-
 Hyper-parameters used for training the model are shown below:
 ```py
 learning_rate = 0.005
@@ -75,7 +73,7 @@ Other hyper-parameters (batch_size, steps_per_epoch, validation_steps, workers) 
 The model is trained using Adam optimizer. A multi-class [cross entropy](https://en.wikipedia.org/wiki/Cross_entropy) is used to calculate the training and validation error.
 
 ### Result
-The model is trained and evaluated using a dataset provided by Udacity.
+The model is trained and evaluated using [the dataset provided by Udacity](https://classroom.udacity.com/nanodegrees/nd209/parts/09664d24-bdec-4e64-897a-d0f55e177f09/modules/cac27683-d5f4-40b4-82ce-d708de8f5373/lessons/197a058e-44f6-47df-8229-0ce633e0a2d0/concepts/06dde5a5-a7a2-4636-940d-e844b36ddd27).
 
 There are three different types of images in the evaluation dataset:
 
@@ -103,19 +101,19 @@ Example images of input image, ground truth, and predicted image by the trained 
 The performance of the model is measured by true-positive ratio and  Intersection over Union (IoU) metric. The final score of the model reached 0.411516123844, which is above the required score of 0.4.
 
 ### Limitations
-- The IoU for the target becomes extremely low when the target is far away from the quadcopter. The IoU score with distant-target image (0.22494295392225377) is less than 1/3 of the score with folloing_images (0.9129568744909774). This is the bottleneck of the performance of the model on the final score.
+- The IoU for the target becomes extremely low when the target is far away from the quadcopter. The IoU score in this situation  (0.22494295392225377) is less than 1/3 of the score with folloing_images (0.9129568744909774). This is the bottleneck of the performance of the model on the final score.
 
 - Although the model architecture is not limited to human segmentation, we have to train the model with other datasets in order to follow other objects (dog, cat, car, etc..). If correct images and labels are provided, the model should be able to segment other objects without changing its architecture.
 
 ### Future Enhancements
 
-To improve the final score, it is critical for the model to correctly segment the target from distance. There are two possible solutions for this problem; train with more images from different distance, or increase the input image resolution.
+To improve the final score, it is critical for the model to correctly segment the target from distance. There are two possible solutions for this problem; train with more images from different distances, or increase the input image resolution.
 
-Using more datasets is an obvious solution since it solves the underfitting problem when the target is distant. In addition, increasing the image resolution would also be a solve this problem because it preserves the information from distance. Undersizing the input images to 160x160 resolution makes it impossible for even human eyes to recognize the target in distance:
+Using more datasets is an obvious solution since it solves the underfitting problem when the target is far away from the quadcopter. In addition, increasing the image resolution may solve this problem because it preserves the information of the target pixels even when she is in distance. Current resolution of 160x160 pixels makes it impossible for even human eyes to recognize the target:
 
 ![Target is not recognizable even for human eyes][image_patrol_with_targ_distant]
 
-However, increasing the resolution makes the prediction time of the model longer, which might cause the network to be not able to perform its prediction in realtime. We have to take care of this trade-off.
+However, increasing the resolution makes the prediction time  longer, which might cause the network not to be able to perform its prediction in realtime. We have to take care of this trade-off.
 
 ### Files
 #### model
