@@ -1,4 +1,4 @@
-## Project: Follow Me
+# Project: Follow Me
 
 #### Steps to complete the project:
 
@@ -12,20 +12,20 @@
  Rubric points for this project are explained [here](https://review.udacity.com/#!/rubrics/1155/view).
 
 ---
-### Writeup
-
-- TODO: write limitations and improvements
-- TODO: write introduction
+## Writeup
 
 [//]: # (Image References)
 [image_model]: ./docs/misc/model.png
 [image_following_images]: ./docs/misc/following_images.png
 [image_patrol_non_targ]: ./docs/misc/patrol_non_targ.png
 [image_patrol_with_targ]: ./docs/misc/patrol_with_targ.png
+[image_patrol_with_targ_distant]: ./docs/misc/patrol_with_targ_distant.png
 
-#### Model Architecture
+The goal of this this project is to design a deep neural network that locates the target from a series of images captured with the quadcopter's camera. Using the output from the network, the quadcopter manages to follow the target in an environment with other humans and background.
 
-In this project, we want to locate where the target is in the scene so that the quadcopter can follow the target. We use Fully Convolutional Network (FCN) to achieve this goal.
+### Model Architecture
+
+To locate where the target is in the scene, we segment the input image pixel-by-pixel using a Fully Convolutional Network (FCN).
 
 A typical CNN is a great architecture to classify a picture whether it contains the target. However, since typical CNNs do not preserve the spacial information, we are not able to locate where the target is using this architecture. FCN, on the other hand, preserves spacial information throughout the entire network. This enables us to extract the target-pixels from the scene.
 
@@ -53,7 +53,7 @@ Blow is an plotted image of the model:
 
 ![model plot][image_model]
 
-#### Training
+### Training
 The model is trained using default datasets provided by Udacity.
 
 Hyper-parameters used for training the model are shown below:
@@ -74,8 +74,10 @@ Other hyper-parameters (batch_size, steps_per_epoch, validation_steps, workers) 
 
 The model is trained using Adam optimizer. A multi-class [cross entropy](https://en.wikipedia.org/wiki/Cross_entropy) is used to calculate the training and validation error.
 
-#### Result
-The trained model is evaluated using the following three different types of test-images:
+### Result
+The model is trained and evaluated using a dataset provided by Udacity.
+
+There are three different types of images in the evaluation dataset:
 
 - following_images
   - Images to test how well the network can identify the target while following them.
@@ -100,10 +102,23 @@ Example images of input image, ground truth, and predicted image by the trained 
 
 The performance of the model is measured by true-positive ratio and  Intersection over Union (IoU) metric. The final score of the model reached 0.411516123844, which is above the required score of 0.4.
 
-#### Limitations and Improvements
+### Limitations
+- The IoU for the target becomes extremely low when the target is far away from the quadcopter. The IoU score with distant-target image (0.22494295392225377) is less than 1/3 of the score with folloing_images (0.9129568744909774). This is the bottleneck of the performance of the model on the final score.
 
-#### Files
-##### model
+- Although the model architecture is not limited to human segmentation, we have to train the model with other datasets in order to follow other objects (dog, cat, car, etc..). If correct images and labels are provided, the model should be able to segment other objects without changing its architecture.
+
+### Future Enhancements
+
+To improve the final score, it is critical for the model to correctly segment the target from distance. There are two possible solutions for this problem; train with more images from different distance, or increase the input image resolution.
+
+Using more datasets is an obvious solution since it solves the underfitting problem when the target is distant. In addition, increasing the image resolution would also be a solve this problem because it preserves the information from distance. Undersizing the input images to 160x160 resolution makes it impossible for even human eyes to recognize the target in distance:
+
+![Target is not recognizable even for human eyes][image_patrol_with_targ_distant]
+
+However, increasing the resolution makes the prediction time of the model longer, which might cause the network to be not able to perform its prediction in realtime. We have to take care of this trade-off.
+
+### Files
+#### model
 The trained weights of the model are saved in the HDF5 format. They are located in the following directory:
 
 ```
@@ -112,7 +127,7 @@ The trained weights of the model are saved in the HDF5 format. They are located 
   model_weights1
 ```
 
-##### notebook
+#### notebook
 The model is implemented in the below notebook.  There is also a html version  of this notebook:
 
 ```
